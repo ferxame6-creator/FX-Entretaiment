@@ -71,7 +71,7 @@ function centerStageGuides(){
   if(!stage||!zones)return;
   const width=stage.offsetWidth,height=stage.offsetHeight,grid=getComputedStyle(stage).backgroundSize.split(/\s+/),cellX=parseFloat(grid[0])||20,cellY=parseFloat(grid[1])||cellX;
   const center=(percent,size,cell)=>Math.max(cell/2,Math.min(size-cell/2,Math.round((percent/100*size)/cell-.5)*cell+cell/2));
-  const x=width/2,y=height/2,x1=center(100/3,width,cellX),x2=center(200/3,width,cellX),y1=center(100/3,height,cellY),y2=center(200/3,height,cellY);
+  const x=width/2,y=height/2,x1=center(100/3,width,cellX),x2=Math.max(cellX/2,center(200/3,width,cellX)-cellX),y1=center(100/3,height,cellY),y2=center(200/3,height,cellY);
   stage.style.setProperty('--guide-center-x',`${x/width*100}%`);stage.style.setProperty('--guide-center-y',`${y/height*100}%`);
   zones.querySelector('.zone-v.one').style.left=`${x1/width*100}%`;zones.querySelector('.zone-v.two').style.left=`${x2/width*100}%`;
   zones.querySelector('.zone-h.one').style.top=`${y1/height*100}%`;zones.querySelector('.zone-h.two').style.top=`${y2/height*100}%`;
