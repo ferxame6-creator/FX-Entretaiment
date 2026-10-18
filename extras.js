@@ -70,8 +70,12 @@ function centerStageGuides(){
   const stage=$('#stage'),zones=$('.stage-zones');
   if(!stage||!zones)return;
   const width=stage.offsetWidth,height=stage.offsetHeight,grid=getComputedStyle(stage).backgroundSize.split(/\s+/),cellX=parseFloat(grid[0])||20,cellY=parseFloat(grid[1])||cellX;
-  const center=(percent,size,cell)=>Math.max(cell/2,Math.min(size-cell/2,Math.round((percent/100*size)/cell-.5)*cell+cell/2));
-  const x=width/2,y=height/2,x1=center(100/3,width,cellX),x2=Math.max(cellX/2,center(200/3,width,cellX)-cellX),y1=center(100/3,height,cellY),y2=center(200/3,height,cellY);
+  // Keep each pair exactly symmetric around the stage center; snapping the
+  // one-third positions separately could make one guide drift by a grid cell.
+  const x=width/2,y=height/2;
+  const offsetX=Math.min(width/2-cellX/2,Math.max(cellX,Math.round((width/6)/cellX)*cellX));
+  const offsetY=Math.min(height/2-cellY/2,Math.max(cellY,Math.round((height/6)/cellY)*cellY));
+  const x1=x-offsetX,x2=x+offsetX,y1=y-offsetY,y2=y+offsetY;
   stage.style.setProperty('--guide-center-x',`${x/width*100}%`);stage.style.setProperty('--guide-center-y',`${y/height*100}%`);
   zones.querySelector('.zone-v.one').style.left=`${x1/width*100}%`;zones.querySelector('.zone-v.two').style.left=`${x2/width*100}%`;
   zones.querySelector('.zone-h.one').style.top=`${y1/height*100}%`;zones.querySelector('.zone-h.two').style.top=`${y2/height*100}%`;
@@ -1247,6 +1251,35 @@ motionPolish.textContent=`
   @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}#welcomeHome::before{display:none}}
 `;
 document.head.append(motionPolish);
+const welcomeLayoutStyle=document.createElement('style');
+welcomeLayoutStyle.textContent=`
+  @keyframes welcomeDrop{0%{opacity:0;transform:translateY(-18px);filter:blur(3px)}72%{opacity:1;transform:translateY(2px);filter:blur(0)}100%{opacity:1;transform:translateY(0);filter:blur(0)}}
+  @keyframes welcomeFade{from{opacity:0}to{opacity:1}}
+  #welcomeHome .welcome-top{position:relative;left:50%;width:min(1450px,calc(100vw - clamp(36px,8vw,108px)));transform:translateX(-50%);animation:none!important}
+  #welcomeHome .welcome-brand{animation:welcomeDrop .68s cubic-bezier(.2,.75,.25,1) .08s both!important}
+  #welcomeHome .welcome-edition{animation:welcomeDrop .68s cubic-bezier(.2,.75,.25,1) .14s both!important}
+  #welcomeHome .welcome-shell{width:min(1120px,100%);animation:welcomeFade .42s ease-out both!important}
+  #welcomeHome .welcome-top{margin-bottom:clamp(24px,4vh,42px)}
+  #welcomeHome .welcome-hero{grid-template-columns:minmax(220px,.7fr) minmax(340px,1.3fr);gap:clamp(24px,5vw,64px)}
+  #welcomeHome .welcome-actions{flex-direction:column;align-items:stretch;max-width:250px;gap:10px;margin-top:22px}
+  #welcomeHome .welcome-actions button{width:100%;justify-content:flex-start;min-height:48px}
+  #welcomeHome .welcome-stage{width:100%;transform:none;animation:welcomeDrop .72s cubic-bezier(.2,.75,.25,1) .3s both!important}
+  #welcomeHome .welcome-kicker{animation:welcomeDrop .62s cubic-bezier(.2,.75,.25,1) .12s both!important}
+  #welcomeHome .welcome-copy h1{animation:welcomeDrop .7s cubic-bezier(.2,.75,.25,1) .18s both!important}
+  #welcomeHome .welcome-copy>p{animation:welcomeDrop .64s cubic-bezier(.2,.75,.25,1) .25s both!important}
+  #welcomeHome .welcome-actions{animation:welcomeDrop .66s cubic-bezier(.2,.75,.25,1) .32s both!important}
+  #welcomeHome .welcome-note{animation:welcomeDrop .6s cubic-bezier(.2,.75,.25,1) .4s both!important}
+  #welcomeHome .welcome-dot{animation:welcomeDrop .62s cubic-bezier(.2,.75,.25,1) .34s both!important}
+  #welcomeHome .welcome-dot.d1{animation-delay:.34s!important}#welcomeHome .welcome-dot.d2{animation-delay:.39s!important}#welcomeHome .welcome-dot.d3{animation-delay:.44s!important}#welcomeHome .welcome-dot.d4{animation-delay:.49s!important}#welcomeHome .welcome-dot.d5{animation-delay:.54s!important}
+  #welcomeHome .welcome-section-title{animation:welcomeDrop .62s cubic-bezier(.2,.75,.25,1) .48s both!important}
+  #welcomeHome .welcome-features article{animation:welcomeDrop .62s cubic-bezier(.2,.75,.25,1) both!important}
+  #welcomeHome .welcome-features article:nth-child(1){animation-delay:.54s!important}#welcomeHome .welcome-features article:nth-child(2){animation-delay:.61s!important}#welcomeHome .welcome-features article:nth-child(3){animation-delay:.68s!important}
+  #welcomeHome .welcome-footer{animation:welcomeDrop .6s cubic-bezier(.2,.75,.25,1) .72s both}
+  @media(max-width:760px){#welcomeHome .welcome-hero{grid-template-columns:1fr;gap:22px}#welcomeHome .welcome-actions{max-width:none;flex-direction:row;align-items:stretch}#welcomeHome .welcome-actions button{flex:1;justify-content:center;padding-inline:10px}#welcomeHome .welcome-stage{max-width:520px}}
+  @media(max-width:460px){#welcomeHome .welcome-actions{flex-direction:column}#welcomeHome .welcome-actions button{justify-content:flex-start}}
+  @media(prefers-reduced-motion:reduce){#welcomeHome .welcome-shell,#welcomeHome .welcome-top,#welcomeHome .welcome-kicker,#welcomeHome .welcome-copy h1,#welcomeHome .welcome-copy>p,#welcomeHome .welcome-actions,#welcomeHome .welcome-note,#welcomeHome .welcome-stage,#welcomeHome .welcome-dot,#welcomeHome .welcome-section-title,#welcomeHome .welcome-features article,#welcomeHome .welcome-footer{animation:none!important}}
+`;
+document.head.append(welcomeLayoutStyle);
 const settingsMotion=document.createElement('style');
 settingsMotion.textContent=`
   @keyframes settingsBackdropIn{from{opacity:0;backdrop-filter:blur(0)}to{opacity:1;backdrop-filter:blur(7px)}}
@@ -1407,6 +1440,7 @@ setTimeout(()=>{
     const contour=config.shape==='custom'?config.points:stageContours[config.shape];
     if(config.shape!=='square'&&contour?.length>=3)stage.style.clipPath=`polygon(${contour.map(p=>`${p[0]}% ${p[1]}%`).join(',')})`;
     drawStageOutline();
+    requestAnimationFrame(centerStageGuides);
     button.textContent=words().open;document.querySelectorAll('[data-stage-shape]').forEach(x=>x.classList.toggle('active',x.dataset.shape===config.shape));
     saveConfig();
   };
