@@ -1,0 +1,60 @@
+{
+  "name": "fx-entretaiment-dance",
+  "version": "1.0.1",
+  "private": true,
+  "author": "FX Dance",
+  "description": "Editor independiente para coreografías FX Dance",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ferxame6-creator/FX-Entretaiment.git"
+  },
+  "main": "main.cjs",
+  "scripts": {
+    "start": "electron .",
+    "pwa": "node pwa-server.cjs",
+    "dist": "electron-builder --win nsis",
+    "dist:publish": "electron-builder --win nsis --publish always",
+    "dist:portable": "electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "44.9.0",
+    "electron-builder": "26.15.3"
+  },
+  "dependencies": {
+    "electron-updater": "^6.6.2"
+  },
+  "build": {
+    "appId": "com.fxentertainment.dance",
+    "productName": "FX Entretaiment Dance",
+    "directories": {
+      "output": "release"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "ferxame6-creator",
+        "repo": "FX-Entretaiment",
+        "releaseType": "release"
+      }
+    ],
+    "files": [
+      "index.html",
+      "app_stable.js",
+      "extras.js",
+      "styles.css",
+      "extras.css",
+      "main.cjs"
+    ],
+    "win": {
+      "target": ["nsis", "portable"]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowElevation": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}

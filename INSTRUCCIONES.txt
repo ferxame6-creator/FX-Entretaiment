@@ -1,0 +1,18 @@
+FX ENTRETAIMENT DANCE — INSTALACIÓN EN WINDOWS
+
+INSTALAR
+1. Abre “FX Entretaiment Dance Setup 1.0.0.exe”.
+2. Sigue el asistente. Puedes elegir la carpeta de instalación y dejar que cree los accesos directos.
+3. Al terminar, inicia FX Entretaiment Dance desde el menú Inicio o el acceso directo.
+
+AVISO DE WINDOWS
+Este instalador no tiene firma Authenticode. Windows puede advertir que no reconoce al publicador; eso no demuestra por sí solo que el archivo sea malicioso, pero tampoco permite afirmar que sea “100% seguro” o que haya sido verificado por Microsoft. Usa únicamente el instalador obtenido de una fuente en la que confíes y, si tienes dudas, analízalo con Microsoft Defender antes de abrirlo.
+
+Si aparece Microsoft Defender SmartScreen con el mensaje “Windows protegió su PC”, puede estar disponible “Más información” y luego “Ejecutar de todas formas”. Hazlo solo si verificaste que abriste el instalador esperado y confías en su origen.
+
+Si el aviso dice “Smart App Control bloqueó una aplicación que podría ser insegura”, Windows puede no ofrecer “Ejecutar de todas formas”. No desactives Smart App Control para instalar este archivo. En ese caso, cancela la instalación y solicita una versión firmada digitalmente o distribuida por Microsoft Store.
+
+DESINSTALAR
+Busca “FX Entretaiment Dance” en Configuración > Aplicaciones > Aplicaciones instaladas y selecciona Desinstalar.
+
+El instalador incluye el runtime necesario de la aplicación; el usuario final no necesita instalar Node.js, Electron ni otras librerías.
